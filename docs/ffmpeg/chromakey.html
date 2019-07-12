@@ -1,0 +1,330 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>ffmpeg日常命令-chromakey · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="overlay.html" />
+    
+    
+    <link rel="prev" href="../gitbook.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Github.html">
+            
+                <a href="../Github.html">
+            
+                    
+                    Github相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../GitLab.html">
+            
+                <a href="../GitLab.html">
+            
+                    
+                    GitLab使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../Git创建本地仓库，添加钩子.html">
+            
+                <a href="../Git创建本地仓库，添加钩子.html">
+            
+                    
+                    Git创建本地仓库，添加钩子
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../gitbook.html">
+            
+                <a href="../gitbook.html">
+            
+                    
+                    gitbook相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6" data-path="chromakey.html">
+            
+                <a href="chromakey.html">
+            
+                    
+                    ffmpeg日常命令-chromakey
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="overlay.html">
+            
+                <a href="overlay.html">
+            
+                    
+                    ffmpeg日常命令-overlay
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >ffmpeg日常命令-chromakey</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="ffmpeg&#x65E5;&#x5E38;&#x547D;&#x4EE4;--&#x89C6;&#x9891;&#x8986;&#x76D6;&#x56FE;&#x7247;">ffmpeg&#x65E5;&#x5E38;&#x547D;&#x4EE4;--&#x89C6;&#x9891;&#x8986;&#x76D6;&#x56FE;&#x7247;</h1>
+<h2 id="&#x5C06;&#x4E00;&#x4E2A;&#x89C6;&#x9891;&#x8986;&#x76D6;&#x5728;&#x56FE;&#x7247;&#x4E0A;">&#x5C06;&#x4E00;&#x4E2A;&#x89C6;&#x9891;&#x8986;&#x76D6;&#x5728;&#x56FE;&#x7247;&#x4E0A;</h2>
+<pre><code>ffmpeg -loop 1 -i  bg.png -i front.mov -filter_complex &quot;[1:v]chromakey=Black:0.01:0.2[ckout];[0:v][ckout]overlay[out]&quot; -map &quot;[out]&quot; -t 10  -y out.mp4
+</code></pre><p>chromakey&#x662F;&#x4E00;&#x79CD;&#x89C6;&#x9891;&#x6EE4;&#x955C;&#xFF0C;&#x53EF;&#x5C06;&#x5BF9;&#x5E94;&#x7684;&#x989C;&#x8272;&#x8BBE;&#x7F6E;&#x4E3A;&#x900F;&#x660E;&#xFF0C;&#x5B9E;&#x73B0;&#x62A0;&#x56FE;&#x7684;&#x529F;&#x80FD;&#xFF1B;&#x56FE;&#x7247;&#x4E0E;&#x89C6;&#x9891;&#x5747;&#x53EF;&#x64CD;&#x4F5C;&#xFF1B;
+&#x5177;&#x4F53;&#x5E94;&#x7528;&#xFF1A;
+1.&#x53EF;&#x5B9E;&#x73B0;&#x5C06;&#x5E26;&#x6709;&#x80CC;&#x666F;&#x989C;&#x8272;&#x7684;logo&#xFF0C;&#x53BB;&#x6389;&#x80CC;&#x666F;&#x8272;&#xFF0C;&#x4F5C;&#x89C6;&#x9891;&#x7684;&#x6C34;&#x5370;
+2.&#x53EF;&#x5C06;&#x67D0;&#x4E2A;&#x89C6;&#x9891;&#x7684;&#x80CC;&#x666F;&#x8272;&#x53BB;&#x6389;&#xFF0C;&#x8986;&#x76D6;&#x5728;&#x5176;&#x4ED6;&#x89C6;&#x9891;(&#x5F85;&#x9A8C;&#x8BC1;)&#xFF0C;&#x6216;&#x56FE;&#x7247;&#x4E0A;&#xFF0C;&#x5B9E;&#x73B0;&#x7279;&#x6548;&#x529F;&#x80FD;</p>
+<p>&#x8BED;&#x6CD5;&#xFF1A;chromakey=color:similarity:blend
+color:</p>
+<pre><code>&#x6307;&#x5B9A;&#x8981;&#x88AB;&#x66FF;&#x6362;&#x4E3A;&#x900F;&#x660E;&#x7684;&#x989C;&#x8272;
+</code></pre><p>similarity&#xFF1A;</p>
+<pre><code>&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;&#x767E;&#x5206;&#x6BD4;&#xFF0C;&#x5F53;&#x50CF;&#x7D20;&#x7684;&#x989C;&#x8272;&#x4E0E;&#x6307;&#x5B9A;&#x989C;&#x8272;&#x7684;&#x76F8;&#x4F3C;&#x5EA6;&#x8FBE;&#x5230;&#x8BE5;&#x503C;&#x65F6;&#x88AB;&#x66FF;&#x6362;,0.01&#x4E3A;&#x5B8C;&#x5168;&#x76F8;&#x540C;&#xFF0C;&#x4E3A;1&#x65F6;&#x5339;&#x914D;&#x4EFB;&#x4F55;&#x989C;&#x8272;
+</code></pre><p>blend</p>
+<pre><code>&#x878D;&#x5408;&#x7A0B;&#x5EA6;(&#x767E;&#x5206;&#x6BD4;)0.0&#x65F6;&#x5B8C;&#x5168;&#x4E0D;&#x878D;&#x5408;&#xFF0C;&#x5F88;&#x7A81;&#x5140;&#xFF0C;1&#x65F6;&#x6548;&#x679C;&#x6700;&#x6DE1;
+</code></pre><p>similarity == 1&#xFF0C;blend == 0.2&#x7684;&#x6548;&#x679C;&#xFF1A;
+<img src="../assets/Selection_003.png" alt="similarity == 1">
+similarity == 0.01&#xFF0C;blend == 0.2&#x7684;&#x6548;&#x679C;&#xFF1A;
+<img src="../assets/Selection_002.png" alt="Selection_002">
+blend == 0&#xFF0C;similarity == 0.01&#x7684;&#x6548;&#x679C;:
+<img src="../assets/Selection_004.png" alt="Selection_004">
+blend == 1&#xFF0C;similarity == 0.01&#x7684;&#x6548;&#x679C;:
+<img src="../assets/Selection_005_gpsbpnvvy.png" alt="Selection_005"></p>
+<p>&#x6700;&#x7EC8;&#x9009;&#x62E9;similarity == 0.01 &#xFF0C;blend == 0.2&#x7684;&#x6548;&#x679C;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../gitbook.html" class="navigation navigation-prev " aria-label="Previous page: gitbook相关">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="overlay.html" class="navigation navigation-next " aria-label="Next page: ffmpeg日常命令-overlay">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"ffmpeg日常命令-chromakey","level":"1.6","depth":1,"next":{"title":"ffmpeg日常命令-overlay","level":"1.7","depth":1,"path":"ffmpeg/overlay.md","ref":"ffmpeg/overlay.md","articles":[]},"previous":{"title":"gitbook相关","level":"1.5","depth":1,"path":"gitbook.md","ref":"gitbook.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ffmpeg/chromakey.md","mtime":"2019-07-12T10:23:14.596Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-07-12T10:31:31.936Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
